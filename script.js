@@ -459,20 +459,31 @@ function createList(){
 
 
 
-        dateBox.innerHTML=`
+let formattedDate = new Date(date).toLocaleDateString("en-US", {
+
+    weekday: "long",
+
+    year: "numeric",
+
+    month: "long",
+
+    day: "numeric"
+
+});
 
 
-        <div class="subject-header">
 
-            📅 ${date} ▼
+dateBox.innerHTML=`
 
-        </div>
+<div class="subject-header">
 
+    📅 ${formattedDate} ▼
 
-        <div class="date-subjects"></div>
+</div>
 
+<div class="date-subjects"></div>
 
-        `;
+`;
 
 
 
