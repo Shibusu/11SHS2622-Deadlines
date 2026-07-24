@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Class Deadline Tracker</title>
+
+
+    <link 
+        href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" 
+        rel="stylesheet"
+    >
+
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+
+<body>
+
+
+<h1>📚 Class Deadline Tracker</h1>
+
+
+
+<div id="filters">
+
+
+    <button onclick="filterSubject('all')">
+        All
+    </button>
+
+
+    <button onclick="filterSubject('GenSci')">
+        <span class="dot gensci"></span>
+        GenSci
+    </button>
+
+
+    <button onclick="filterSubject('GenMath')">
+        <span class="dot genmath"></span>
+        GenMath
+    </button>
+
+
+    <button onclick="filterSubject('FiMa')">
+        <span class="dot fima"></span>
+        FiMa
+    </button>
+
+
+    <button onclick="filterSubject('L&CSK')">
+        <span class="dot lcsk"></span>
+        L&CSK
+    </button>
+
+
+    <button onclick="filterSubject('Kasaysayan')">
+        <span class="dot kasaysayan"></span>
+        Kasaysayan
+    </button>
+
+
+    <button onclick="filterSubject('MabCom')">
+        <span class="dot mabcom"></span>
+        MabCom
+    </button>
+
+
+    <button onclick="filterSubject('EffCom')">
+        <span class="dot effcom"></span>
+        EffCom
+    </button>
+
+
+</div>
+
+
+
+
+
+<div id="viewButtons">
+
+
+    <button onclick="showCalendar()">
+        📅 Calendar
+    </button>
+
+
+    <button onclick="showList()">
+        📋 List
+    </button>
+
+
+</div>
+
+
+
+
+
+
+<div id="calendar"></div>
+
+
+
+<div id="deadlineList"></div>
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+
+<script src="script.js"></script>
+
+
+
+</body>
+
+
+</html>
