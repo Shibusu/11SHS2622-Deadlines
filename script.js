@@ -30,9 +30,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         {
 
-
             initialView: 'dayGridMonth',
 
+
+            // NEW: collapse multiple events on the same day
+            dayMaxEvents: true,
 
 
             headerToolbar: {
@@ -44,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 right: "dayGridMonth,listMonth"
 
             },
-
 
 
             events: function(fetchInfo, successCallback, failureCallback) {
@@ -116,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-                    // Filter subjects
+                    // Subject filter
 
                     if (currentFilter !== "all") {
 
