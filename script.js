@@ -28,12 +28,9 @@ const subjectColors = {
 
 document.addEventListener("DOMContentLoaded", function(){
 
-
     loadDeadlines();
 
-
     setActiveButton("calendar");
-
 
 });
 
@@ -48,22 +45,7 @@ function loadDeadlines(){
 
     fetch(sheetURL)
 
-
-    .then(response => {
-
-
-        if(!response.ok){
-
-            throw new Error("Failed to load Google Sheet");
-
-        }
-
-
-        return response.text();
-
-
-    })
-
+    .then(response => response.text())
 
     .then(csv => {
 
@@ -80,7 +62,6 @@ function loadDeadlines(){
 
     })
 
-
     .catch(error => {
 
 
@@ -88,12 +69,10 @@ function loadDeadlines(){
 
 
         document.getElementById("errorMessage").innerHTML =
-
         "⚠️ Failed to load deadlines";
 
 
     });
-
 
 
 }
@@ -122,7 +101,6 @@ function parseCSV(csv){
     for(let i = 1; i < rows.length; i++){
 
 
-
         let columns = rows[i].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
 
@@ -140,8 +118,6 @@ function parseCSV(csv){
         let subject = columns[1].replaceAll('"',"").trim();
 
         let date = columns[2].replaceAll('"',"").trim();
-
-
 
 
 
@@ -188,11 +164,9 @@ function createCalendar(){
 
 
 
-
     calendar = new FullCalendar.Calendar(
 
         document.getElementById("calendar"),
-
 
         {
 
@@ -219,21 +193,20 @@ function createCalendar(){
 
 
 
-                let events = [];
+                let events=[];
+
+
+                let grouped=groupDeadlines(getFilteredDeadlines());
 
 
 
-                let grouped = groupDeadlines(getFilteredDeadlines());
 
 
+                Object.keys(grouped).forEach(key=>{
 
 
+                    let data=key.split("|");
 
-                Object.keys(grouped).forEach(key => {
-
-
-
-                    let data = key.split("|");
 
 
                     events.push({
@@ -246,6 +219,7 @@ function createCalendar(){
                         color:subjectColors[data[1]] || "#6b7280",
 
 
+
                         extendedProps:{
 
 
@@ -255,13 +229,11 @@ function createCalendar(){
                         }
 
 
-
                     });
 
 
 
                 });
-
 
 
 
@@ -279,26 +251,24 @@ function createCalendar(){
 
 
 
-                let wrapper = document.createElement("div");
+                let wrapper=document.createElement("div");
 
 
-                let subject = arg.event.title;
+                let subject=arg.event.title;
 
 
-                let deadlines = arg.event.extendedProps.deadlines;
+                let deadlines=arg.event.extendedProps.deadlines;
 
 
 
-
-                let header = document.createElement("div");
+                let header=document.createElement("div");
 
 
                 header.className="calendar-subject";
 
 
 
-                header.innerHTML =
-
+                header.innerHTML=
 
                 `<span class="dot ${getClass(subject)}"></span>
 
@@ -308,9 +278,7 @@ function createCalendar(){
 
 
 
-
-
-                let list = document.createElement("div");
+                let list=document.createElement("div");
 
 
                 list.className="calendar-deadlines";
@@ -322,19 +290,16 @@ function createCalendar(){
 
 
 
-
-                deadlines.forEach(item => {
-
+                deadlines.forEach(item=>{
 
 
-                    let line = document.createElement("div");
+                    let line=document.createElement("div");
 
 
-                    line.textContent="└ " + item.title;
+                    line.textContent="└ "+item.title;
 
 
                     list.appendChild(line);
-
 
 
                 });
@@ -343,9 +308,7 @@ function createCalendar(){
 
 
 
-
                 header.onclick=function(e){
-
 
 
                     e.stopPropagation();
@@ -358,8 +321,7 @@ function createCalendar(){
                         list.style.display="block";
 
 
-                        header.innerHTML =
-
+                        header.innerHTML=
 
                         `<span class="dot ${getClass(subject)}"></span>
 
@@ -374,8 +336,7 @@ function createCalendar(){
                         list.style.display="none";
 
 
-                        header.innerHTML =
-
+                        header.innerHTML=
 
                         `<span class="dot ${getClass(subject)}"></span>
 
@@ -385,9 +346,7 @@ function createCalendar(){
                     }
 
 
-
                 };
-
 
 
 
@@ -395,19 +354,13 @@ function createCalendar(){
 
                 wrapper.appendChild(header);
 
-
                 wrapper.appendChild(list);
-
-
-
 
 
 
                 return {
 
-
                     domNodes:[wrapper]
-
 
                 };
 
@@ -417,7 +370,6 @@ function createCalendar(){
 
 
         }
-
 
 
     );
@@ -442,90 +394,181 @@ function createList(){
 
 
 
-    let list = document.getElementById("deadlineList");
-
+    let list=document.getElementById("deadlineList");
 
 
     list.innerHTML="";
 
 
 
-    let grouped = groupDeadlines(getFilteredDeadlines());
+    let filtered=getFilteredDeadlines();
+
+
+
+    let dates={};
 
 
 
 
 
-    Object.keys(grouped)
+    // Group by DATE first
+
+    filtered.forEach(item=>{
+
+
+        if(!dates[item.date]){
+
+            dates[item.date]={};
+
+        }
+
+
+
+        if(!dates[item.date][item.subject]){
+
+
+            dates[item.date][item.subject]=[];
+
+
+        }
+
+
+
+        dates[item.date][item.subject].push(item);
+
+
+
+    });
+
+
+
+
+
+
+
+    Object.keys(dates)
 
     .sort()
 
-    .forEach(key => {
+    .forEach(date=>{
 
 
 
-        let data = key.split("|");
-
-
-        let date=data[0];
-
-        let subject=data[1];
+        let dateBox=document.createElement("div");
 
 
 
-        let box=document.createElement("div");
-
-
-
-
-
-        box.innerHTML=`
-
-        <div class="list-date">
-
-            ${date}
-
-        </div>
+        dateBox.innerHTML=`
 
 
         <div class="subject-header">
 
-            <span class="dot ${getClass(subject)}"></span>
-
-            ${subject} ▼
+            📅 ${date} ▼
 
         </div>
 
 
-        <div class="subject-events hidden"></div>
+        <div class="date-subjects"></div>
 
 
         `;
 
 
 
+        let subjects=dateBox.querySelector(".date-subjects");
+
+
+        subjects.classList.add("hidden");
 
 
 
-        let events=box.querySelector(".subject-events");
+
+
+
+
+        Object.keys(dates[date])
+
+        .forEach(subject=>{
+
+
+
+            let subjectBox=document.createElement("div");
+
+
+
+            subjectBox.innerHTML=`
+
+
+            <div class="subject-header" style="margin-left:20px">
+
+
+                <span class="dot ${getClass(subject)}"></span>
+
+                ${subject} ▼
+
+
+            </div>
+
+
+
+            <div class="subject-events hidden"
+
+                 style="margin-left:45px">
+
+            </div>
+
+
+            `;
 
 
 
 
 
-        grouped[key].forEach(item=>{
+            let events=subjectBox.querySelector(".subject-events");
 
 
-            let line=document.createElement("div");
 
 
-            line.className="deadline-item";
+
+            dates[date][subject].forEach(item=>{
 
 
-            line.textContent="└ "+item.title;
+                let line=document.createElement("div");
 
 
-            events.appendChild(line);
+                line.className="deadline-item";
+
+
+                line.textContent="└ "+item.title;
+
+
+                events.appendChild(line);
+
+
+            });
+
+
+
+
+
+
+
+            subjectBox.querySelector(".subject-header").onclick=function(e){
+
+
+                e.stopPropagation();
+
+
+                events.classList.toggle("hidden");
+
+
+            };
+
+
+
+
+            subjects.appendChild(subjectBox);
+
 
 
         });
@@ -534,10 +577,12 @@ function createList(){
 
 
 
-        box.querySelector(".subject-header").onclick=function(){
 
 
-            events.classList.toggle("hidden");
+        dateBox.querySelector(".subject-header").onclick=function(){
+
+
+            subjects.classList.toggle("hidden");
 
 
         };
@@ -546,7 +591,8 @@ function createList(){
 
 
 
-        list.appendChild(box);
+
+        list.appendChild(dateBox);
 
 
 
@@ -567,10 +613,7 @@ function createList(){
 function groupDeadlines(data){
 
 
-
     let grouped={};
-
-
 
 
 
@@ -602,7 +645,6 @@ function groupDeadlines(data){
     return grouped;
 
 
-
 }
 
 
@@ -629,12 +671,9 @@ function getFilteredDeadlines(){
 
     return allDeadlines.filter(item=>
 
-
         item.subject===currentFilter
 
-
     );
-
 
 
 }
@@ -650,9 +689,7 @@ function getFilteredDeadlines(){
 function filterSubject(subject){
 
 
-
     currentFilter=subject;
-
 
 
     calendar.refetchEvents();
@@ -675,7 +712,6 @@ function filterSubject(subject){
 function showCalendar(){
 
 
-
     document.getElementById("calendar").style.display="block";
 
 
@@ -683,7 +719,6 @@ function showCalendar(){
 
 
     setActiveButton("calendar");
-
 
 
 }
@@ -695,8 +730,8 @@ function showCalendar(){
 
 
 
-function showList(){
 
+function showList(){
 
 
     document.getElementById("calendar").style.display="none";
@@ -706,7 +741,6 @@ function showList(){
 
 
     setActiveButton("list");
-
 
 
 }
@@ -737,8 +771,6 @@ function setActiveButton(button){
 
 
 
-
-
     if(button==="calendar"){
 
 
@@ -746,7 +778,6 @@ function setActiveButton(button){
 
 
     }
-
 
     else{
 
