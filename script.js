@@ -1,114 +1,181 @@
+let currentFilter = "all";
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
+
     const subjectColors = {
+
         "GenSci": "#3b82f6",
+
         "GenMath": "#ef4444",
+
         "FiMa": "#f97316",
+
         "L&CSK": "#22c55e",
+
         "Kasaysayan": "#ec4899",
+
         "MabCom": "#a855f7",
+
         "EffCom": "#eab308"
+
     };
 
 
-    const calendar = new FullCalendar.Calendar(
+
+    window.calendar = new FullCalendar.Calendar(
+
         document.getElementById('calendar'),
+
         {
+
 
             initialView: 'dayGridMonth',
 
+
+
             headerToolbar: {
+
                 left: "prev,next today",
+
                 center: "title",
+
                 right: "dayGridMonth,listMonth"
-            },
-
-
-            eventDidMount: function(info) {
-
-                if (info.view.type === "listMonth") {
-
-                    let subject = info.event.extendedProps.subject;
-
-                    let timeCell = info.el.querySelector(".fc-list-event-time");
-
-                    if (timeCell && subject) {
-                        timeCell.innerHTML = subject;
-                    }
-
-                }
 
             },
+
 
 
             events: function(fetchInfo, successCallback, failureCallback) {
 
+
                 fetch("https://docs.google.com/spreadsheets/d/1_OZQAOVAdUXa5H_tDAU2bw7Dq_lhBlGq9yUw9yU2WWs/export?format=csv")
 
-                    .then(response => response.text())
 
-                    .then(csv => {
-
-                        let rows = csv.split("\n");
-
-                        let events = [];
+                .then(response => response.text())
 
 
-                        // Skip header row
-                        for (let i = 1; i < rows.length; i++) {
-
-                            let data = rows[i].split(",");
+                .then(csv => {
 
 
-                            if (data.length >= 3) {
+                    let rows = csv.split("\n");
 
-                                let title = data[0].trim();
-                                let subject = data[1].trim();
-                                let date = data[2].trim();
+                    let events = [];
 
 
-                                if (title && date) {
 
-                                    events.push({
+                    for (let i = 1; i < rows.length; i++) {
 
-                                        title: `[${subject}] ${title}`,
 
-                                        start: date,
+                        let data = rows[i].split(",");
 
-                                        color: subjectColors[subject] || "#6b7280",
 
-                                        extendedProps: {
-                                            subject: subject
-                                        }
 
-                                    });
+                        if (data.length >= 3) {
 
-                                }
+
+                            let title = data[0].trim();
+
+                            let subject = data[1].trim();
+
+                            let date = data[2].trim();
+
+
+
+                            if (title && date) {
+
+
+                                events.push({
+
+
+                                    title: `[${subject}] ${title}`,
+
+                                    start: date,
+
+                                    color: subjectColors[subject] || "#6b7280",
+
+
+                                    extendedProps: {
+
+                                        subject: subject
+
+                                    }
+
+
+                                });
+
 
                             }
+
 
                         }
 
 
-                        successCallback(events);
-
-                    })
+                    }
 
 
-                    .catch(error => {
 
-                        console.log("Error loading deadlines:", error);
+                    // Filter subjects
 
-                        failureCallback(error);
+                    if (currentFilter !== "all") {
 
-                    });
+
+                        events = events.filter(event =>
+
+                            event.extendedProps.subject === currentFilter
+
+                        );
+
+
+                    }
+
+
+
+                    successCallback(events);
+
+
+
+                })
+
+
+
+                .catch(error => {
+
+
+                    console.log("Error loading deadlines:", error);
+
+                    failureCallback(error);
+
+
+                });
+
 
             }
 
         }
+
+
     );
+
 
 
     calendar.render();
 
+
 });
+
+
+
+
+
+function filterSubject(subject) {
+
+
+    currentFilter = subject;
+
+
+    calendar.refetchEvents();
+
+
+}
