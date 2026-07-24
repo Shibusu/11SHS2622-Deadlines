@@ -1,3 +1,4 @@
+alert("NEW SCRIPT VERSION");
 let currentFilter = "all";
 
 let allDeadlines = [];
