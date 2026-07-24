@@ -1,238 +1,679 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background: #f8fafc;
-}
+let currentFilter = "all";
+
+let allDeadlines = [];
+
+let calendar;
 
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+const sheetURL = "https://docs.google.com/spreadsheets/d/1_OZQAOVAdUXa5H_tDAU2bw7Dq_lhBlGq9yUw9yU2WWs/export?format=csv";
 
 
-/* Filter buttons */
+const subjectColors = {
 
-#filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 20px;
-}
+    "GenSci": "#3b82f6",
+    "GenMath": "#ef4444",
+    "FiMa": "#f97316",
+    "L&CSK": "#22c55c",
+    "Kasaysayan": "#ec4899",
+    "MabCom": "#a855f7",
+    "EffCom": "#eab308"
 
-
-#filters button {
-
-    background: white;
-
-    border: 1px solid #d1d5db;
-
-    border-radius: 8px;
-
-    padding: 8px 14px;
-
-    cursor: pointer;
-
-    font-size: 14px;
-
-    display: flex;
-
-    align-items: center;
-
-}
-
-
-#filters button:hover {
-
-    background: #f1f5f9;
-
-}
+};
 
 
 
-/* Subject dots */
+document.addEventListener("DOMContentLoaded", function(){
 
-.dot {
+    loadDeadlines();
 
-    display: inline-block;
-
-    width: 10px;
-
-    height: 10px;
-
-    border-radius: 50%;
-
-    margin-right: 7px;
-
-}
-
-
-.gensci {
-    background: #3b82f6;
-}
-
-
-.genmath {
-    background: #ef4444;
-}
-
-
-.fima {
-    background: #f97316;
-}
-
-
-.lcsk {
-    background: #22c55e;
-}
-
-
-.kasaysayan {
-    background: #ec4899;
-}
-
-
-.mabcom {
-    background: #a855f7;
-}
-
-
-.effcom {
-    background: #eab308;
-}
+});
 
 
 
-/* Calendar */
 
-#calendar {
 
-    max-width: 1100px;
+function loadDeadlines(){
 
-    margin: auto;
 
-    background: white;
+    fetch(sheetURL)
 
-    padding: 20px;
+    .then(response => response.text())
 
-    border-radius: 12px;
+    .then(csv => {
 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+        let rows = csv.split("\n");
+
+
+        allDeadlines = [];
+
+
+
+        for(let i = 1; i < rows.length; i++){
+
+
+            let data = rows[i].split(",");
+
+
+
+            if(data.length >= 3){
+
+
+                let title = data[0].trim();
+
+                let subject = data[1].trim();
+
+                let date = data[2].trim();
+
+
+
+                if(title && subject && date){
+
+
+                    allDeadlines.push({
+
+                        title:title,
+
+                        subject:subject,
+
+                        date:date
+
+                    });
+
+
+                }
+
+            }
+
+
+        }
+
+
+
+        createCalendar();
+
+        createList();
+
+
+    });
+
+
 
 }
 
 
 
-/* Custom grouped list */
-
-#deadlineList {
-
-    max-width: 1100px;
-
-    margin: 20px auto;
-
-    background: white;
-
-    padding: 20px;
-
-    border-radius: 12px;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-
-}
 
 
 
-.list-date {
 
-    font-size: 20px;
 
-    font-weight: bold;
+function createCalendar(){
 
-    margin-top: 20px;
 
-    margin-bottom: 10px;
+    let events = [];
 
-}
+
+    let filtered = getFilteredDeadlines();
 
 
 
-.subject-group {
-
-    margin-bottom: 10px;
-
-}
+    let grouped = {};
 
 
 
-.subject-header {
 
-    cursor: pointer;
-
-    font-weight: bold;
-
-    padding: 10px;
-
-    border-radius: 8px;
-
-    background: #f1f5f9;
-
-    display: flex;
-
-    align-items: center;
-
-}
+    filtered.forEach(item => {
 
 
 
-.subject-header:hover {
-
-    background: #e2e8f0;
-
-}
+        let key = item.date + "|" + item.subject;
 
 
 
-.subject-events {
+        if(!grouped[key]){
 
-    margin-left: 30px;
+            grouped[key] = [];
 
-    margin-top: 8px;
-
-}
+        }
 
 
 
-.deadline-item {
-
-    padding: 6px 0;
-
-}
+        grouped[key].push(item);
 
 
 
-/* Mobile */
-
-@media (max-width: 600px) {
-
-    body {
-        margin: 10px;
-    }
+    });
 
 
-    #calendar,
-    #deadlineList {
 
-        padding: 10px;
+
+
+    Object.keys(grouped).forEach(key => {
+
+
+
+        let parts = key.split("|");
+
+
+        events.push({
+
+
+            title: parts[1],
+
+
+            start: parts[0],
+
+
+            color: subjectColors[parts[1]],
+
+
+
+            extendedProps:{
+
+
+                deadlines: grouped[key]
+
+
+            }
+
+
+        });
+
+
+
+    });
+
+
+
+
+
+
+
+    if(calendar){
+
+        calendar.destroy();
 
     }
 
 
-    #filters button {
 
-        font-size: 12px;
+
+
+
+
+    calendar = new FullCalendar.Calendar(
+
+        document.getElementById("calendar"),
+
+
+        {
+
+
+            initialView:"dayGridMonth",
+
+
+
+            headerToolbar:{
+
+
+                left:"prev,next today",
+
+                center:"title",
+
+                right:"dayGridMonth"
+
+            },
+
+
+
+
+            events:events,
+
+
+
+
+
+            eventContent:function(arg){
+
+
+
+                let deadlines = arg.event.extendedProps.deadlines;
+
+
+
+                let container = document.createElement("div");
+
+
+
+                container.className = "calendar-group";
+
+
+
+                let header = document.createElement("div");
+
+
+                header.className = "calendar-subject";
+
+
+
+                header.innerHTML =
+
+                `<span class="dot ${getClass(arg.event.title)}"></span>
+
+                ${arg.event.title} ▼`;
+
+
+
+
+
+                let list = document.createElement("div");
+
+
+
+                list.className = "calendar-deadlines";
+
+
+
+                list.style.display = "none";
+
+
+
+
+
+                deadlines.forEach(item => {
+
+
+
+                    let deadline = document.createElement("div");
+
+
+
+                    deadline.textContent = "└ " + item.title;
+
+
+
+                    list.appendChild(deadline);
+
+
+
+                });
+
+
+
+
+
+
+
+                header.onclick = function(e){
+
+
+                    e.stopPropagation();
+
+
+
+                    if(list.style.display === "none"){
+
+
+                        list.style.display = "block";
+
+
+                        header.innerHTML =
+
+                        `<span class="dot ${getClass(arg.event.title)}"></span>
+
+                        ${arg.event.title} ▲`;
+
+
+                    }
+
+                    else{
+
+
+                        list.style.display = "none";
+
+
+                        header.innerHTML =
+
+                        `<span class="dot ${getClass(arg.event.title)}"></span>
+
+                        ${arg.event.title} ▼`;
+
+
+                    }
+
+
+                };
+
+
+
+
+
+
+
+                container.appendChild(header);
+
+
+                container.appendChild(list);
+
+
+
+
+
+                return {
+
+                    domNodes:[container]
+
+                };
+
+
+
+            }
+
+
+
+
+        }
+
+
+
+    );
+
+
+
+
+
+    calendar.render();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function createList(){
+
+
+    let list = document.getElementById("deadlineList");
+
+
+    list.innerHTML = "";
+
+
+
+    let filtered = getFilteredDeadlines();
+
+
+
+    let grouped = {};
+
+
+
+
+
+    filtered.forEach(item => {
+
+
+
+        let key = item.date + "|" + item.subject;
+
+
+
+        if(!grouped[key]){
+
+
+            grouped[key] = [];
+
+
+        }
+
+
+
+        grouped[key].push(item);
+
+
+
+    });
+
+
+
+
+
+    Object.keys(grouped)
+
+    .sort()
+
+    .forEach(key => {
+
+
+
+        let parts = key.split("|");
+
+
+        let date = parts[0];
+
+        let subject = parts[1];
+
+
+
+        let box = document.createElement("div");
+
+
+
+        box.innerHTML = `
+
+
+        <div class="list-date">
+
+            ${date}
+
+        </div>
+
+
+
+        <div class="subject-header">
+
+            <span class="dot ${getClass(subject)}"></span>
+
+            ${subject} ▼
+
+        </div>
+
+
+
+        <div class="subject-events hidden"></div>
+
+
+        `;
+
+
+
+
+
+
+        let events = box.querySelector(".subject-events");
+
+
+
+
+
+        grouped[key].forEach(item => {
+
+
+
+            let div = document.createElement("div");
+
+
+            div.className = "deadline-item";
+
+
+            div.textContent = "└ " + item.title;
+
+
+
+            events.appendChild(div);
+
+
+
+        });
+
+
+
+
+
+        box.querySelector(".subject-header").onclick = function(){
+
+
+            events.classList.toggle("hidden");
+
+
+        };
+
+
+
+        list.appendChild(box);
+
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function getFilteredDeadlines(){
+
+
+
+    if(currentFilter === "all"){
+
+
+        return allDeadlines;
+
 
     }
+
+
+
+    return allDeadlines.filter(item =>
+
+        item.subject === currentFilter
+
+    );
+
+
+}
+
+
+
+
+
+
+
+
+
+function filterSubject(subject){
+
+
+
+    currentFilter = subject;
+
+
+
+    createCalendar();
+
+    createList();
+
+
+
+}
+
+
+
+
+
+
+
+
+function showCalendar(){
+
+
+
+    document.getElementById("calendar").style.display="block";
+
+
+    document.getElementById("deadlineList").style.display="none";
+
+
+}
+
+
+
+
+
+
+
+
+function showList(){
+
+
+
+    document.getElementById("calendar").style.display="none";
+
+
+    document.getElementById("deadlineList").style.display="block";
+
+
+}
+
+
+
+
+
+
+
+
+function getClass(subject){
+
+
+
+    const classes = {
+
+
+        "GenSci":"gensci",
+
+        "GenMath":"genmath",
+
+        "FiMa":"fima",
+
+        "L&CSK":"lcsk",
+
+        "Kasaysayan":"kasaysayan",
+
+        "MabCom":"mabcom",
+
+        "EffCom":"effcom"
+
+
+    };
+
+
+
+    return classes[subject] || "";
 
 }
