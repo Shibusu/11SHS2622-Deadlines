@@ -11,7 +11,7 @@ h1 {
 }
 
 
-/* Subject filter buttons */
+/* Filter buttons */
 
 #filters {
     display: flex;
@@ -40,8 +40,6 @@ h1 {
 
     align-items: center;
 
-    transition: 0.2s;
-
 }
 
 
@@ -49,13 +47,11 @@ h1 {
 
     background: #f1f5f9;
 
-    transform: translateY(-1px);
-
 }
 
 
 
-/* Colored subject circles */
+/* Subject dots */
 
 .dot {
 
@@ -72,55 +68,38 @@ h1 {
 }
 
 
-
-/* Subject colors */
-
 .gensci {
-
     background: #3b82f6;
-
 }
 
 
 .genmath {
-
     background: #ef4444;
-
 }
 
 
 .fima {
-
     background: #f97316;
-
 }
 
 
 .lcsk {
-
     background: #22c55e;
-
 }
 
 
 .kasaysayan {
-
     background: #ec4899;
-
 }
 
 
 .mabcom {
-
     background: #a855f7;
-
 }
 
 
 .effcom {
-
     background: #eab308;
-
 }
 
 
@@ -145,27 +124,105 @@ h1 {
 
 
 
-/* FullCalendar buttons */
+/* Custom grouped list */
 
-.fc-button {
+#deadlineList {
 
-    border-radius: 6px !important;
+    max-width: 1100px;
+
+    margin: 20px auto;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 
 }
 
 
-/* Mobile support */
+
+.list-date {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-top: 20px;
+
+    margin-bottom: 10px;
+
+}
+
+
+
+.subject-group {
+
+    margin-bottom: 10px;
+
+}
+
+
+
+.subject-header {
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    background: #f1f5f9;
+
+    display: flex;
+
+    align-items: center;
+
+}
+
+
+
+.subject-header:hover {
+
+    background: #e2e8f0;
+
+}
+
+
+
+.subject-events {
+
+    margin-left: 30px;
+
+    margin-top: 8px;
+
+}
+
+
+
+.deadline-item {
+
+    padding: 6px 0;
+
+}
+
+
+
+/* Mobile */
 
 @media (max-width: 600px) {
 
     body {
-
         margin: 10px;
-
     }
 
 
-    #calendar {
+    #calendar,
+    #deadlineList {
 
         padding: 10px;
 
@@ -175,8 +232,6 @@ h1 {
     #filters button {
 
         font-size: 12px;
-
-        padding: 6px 10px;
 
     }
 
