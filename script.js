@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const calendar = new FullCalendar.Calendar(
         document.getElementById('calendar'),
         {
+
             initialView: 'dayGridMonth',
 
             headerToolbar: {
@@ -22,19 +23,41 @@ document.addEventListener('DOMContentLoaded', function () {
                 right: "dayGridMonth,listMonth"
             },
 
+
+            eventContent: function(arg) {
+
+                let subject = arg.event.extendedProps.subject;
+
+                return {
+                    html: `
+                        <div>
+                            <b>${arg.event.title}</b><br>
+                            <small>${subject}</small>
+                        </div>
+                    `
+                };
+
+            },
+
+
             events: function(fetchInfo, successCallback, failureCallback) {
 
                 fetch("https://docs.google.com/spreadsheets/d/1_OZQAOVAdUXa5H_tDAU2bw7Dq_lhBlGq9yUw9yU2WWs/export?format=csv")
+
                     .then(response => response.text())
+
                     .then(csv => {
 
                         let rows = csv.split("\n");
+
                         let events = [];
 
-                        // Skip headers
+
+                        // Skip the first row (headers)
                         for (let i = 1; i < rows.length; i++) {
 
                             let data = rows[i].split(",");
+
 
                             if (data.length >= 3) {
 
@@ -43,21 +66,40 @@ document.addEventListener('DOMContentLoaded', function () {
                                 let date = data[2].trim();
 
 
-                                events.push({
-                                    title: title,
-                                    start: date,
-                                    color: subjectColors[subject] || "#6b7280"
-                                });
+                                if (title && date) {
+
+                                    events.push({
+
+                                        title: title,
+
+                                        start: date,
+
+                                        color: subjectColors[subject] || "#6b7280",
+
+                                        extendedProps: {
+                                            subject: subject
+                                        }
+
+                                    });
+
+                                }
 
                             }
+
                         }
+
 
                         successCallback(events);
 
                     })
+
+
                     .catch(error => {
-                        console.log(error);
+
+                        console.log("Error loading deadlines:", error);
+
                         failureCallback(error);
+
                     });
 
             }
