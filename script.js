@@ -16,7 +16,7 @@ const subjectColors = {
     "GenSci": "#3b82f6",
     "GenMath": "#ef4444",
     "FiMa": "#f97316",
-    "L&CSK": "#22c55e",
+    "L&CSK": "#22c55c",
     "Kasaysayan": "#ec4899",
     "MabCom": "#a855f7",
     "EffCom": "#eab308"
@@ -251,7 +251,13 @@ function createCalendar(){
 
 
 
+    let oldDate = null;
+
+
+
     if(calendar){
+
+        oldDate = calendar.getDate();
 
         calendar.destroy();
 
@@ -274,6 +280,10 @@ function createCalendar(){
 
 
             initialView:"dayGridMonth",
+
+
+
+            initialDate: oldDate || undefined,
 
 
 
@@ -729,6 +739,18 @@ function filterSubject(subject){
 
 
 
+    let currentDate = null;
+
+
+
+    if(calendar){
+
+        currentDate = calendar.getDate();
+
+    }
+
+
+
     currentFilter = subject;
 
 
@@ -737,6 +759,18 @@ function filterSubject(subject){
 
 
     createList();
+
+
+
+
+
+    if(currentDate && calendar){
+
+
+        calendar.gotoDate(currentDate);
+
+
+    }
 
 
 
@@ -760,7 +794,6 @@ function showCalendar(){
     document.getElementById("deadlineList").style.display="none";
 
 
-
 }
 
 
@@ -779,7 +812,6 @@ function showList(){
 
 
     document.getElementById("deadlineList").style.display="block";
-
 
 
 }
