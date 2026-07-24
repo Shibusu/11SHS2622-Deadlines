@@ -34,7 +34,7 @@ h1 {
 
     gap: 10px;
 
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 
 }
 
@@ -42,17 +42,21 @@ h1 {
 
 button {
 
-    border: 1px solid #d1d5db;
+    border: none;
 
     background: white;
 
-    padding: 8px 14px;
+    padding: 10px 16px;
 
-    border-radius: 8px;
+    border-radius: 12px;
 
     cursor: pointer;
 
     font-size: 14px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+    transition: 0.2s;
 
 }
 
@@ -60,7 +64,9 @@ button {
 
 button:hover {
 
-    background: #e2e8f0;
+    transform: translateY(-2px);
+
+    background: #f1f5f9;
 
 }
 
@@ -76,11 +82,42 @@ button:hover {
 
     justify-content: center;
 
-    gap: 10px;
+    align-items: center;
 
-    margin-bottom: 20px;
+    gap: 15px;
+
+    margin: 25px auto;
 
 }
+
+
+
+#viewButtons button {
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    padding: 12px 24px;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    border: 2px solid #e2e8f0;
+
+}
+
+
+
+#viewButtons button:hover {
+
+    background: #e0f2fe;
+
+    border-color: #38bdf8;
+
+}
+
 
 
 
@@ -106,49 +143,55 @@ button:hover {
 
 .gensci {
 
-    background: #3b82f6;
+    background:#3b82f6;
 
 }
+
 
 
 .genmath {
 
-    background: #ef4444;
+    background:#ef4444;
 
 }
+
 
 
 .fima {
 
-    background: #f97316;
+    background:#f97316;
 
 }
+
 
 
 .lcsk {
 
-    background: #22c55e;
+    background:#22c55e;
 
 }
+
 
 
 .kasaysayan {
 
-    background: #ec4899;
+    background:#ec4899;
 
 }
+
 
 
 .mabcom {
 
-    background: #a855f7;
+    background:#a855f7;
 
 }
 
 
+
 .effcom {
 
-    background: #eab308;
+    background:#eab308;
 
 }
 
@@ -160,41 +203,17 @@ button:hover {
 
 #calendar {
 
-    max-width: 1100px;
+    max-width:1100px;
 
-    margin: auto;
+    margin:auto;
 
-    background: white;
+    background:white;
 
-    padding: 20px;
+    padding:20px;
 
-    border-radius: 12px;
+    border-radius:16px;
 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-
-}
-
-
-
-
-
-/* Custom list */
-
-#deadlineList {
-
-    display: none;
-
-    max-width: 1100px;
-
-    margin: auto;
-
-    background: white;
-
-    padding: 20px;
-
-    border-radius: 12px;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
 
 }
 
@@ -204,15 +223,35 @@ button:hover {
 
 /* List */
 
+#deadlineList {
+
+    display:none;
+
+    max-width:1100px;
+
+    margin:auto;
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:16px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+}
+
+
+
+
+
 .list-date {
 
-    font-size: 20px;
+    font-size:20px;
 
-    font-weight: bold;
+    font-weight:bold;
 
-    margin-top: 20px;
-
-    margin-bottom: 10px;
+    margin-top:20px;
 
 }
 
@@ -222,29 +261,27 @@ button:hover {
 
 .subject-header {
 
-    display: flex;
+    display:flex;
 
-    align-items: center;
+    align-items:center;
 
-    cursor: pointer;
+    cursor:pointer;
 
-    padding: 10px;
+    padding:10px;
 
-    background: #f1f5f9;
+    background:#f1f5f9;
 
-    border-radius: 8px;
+    border-radius:10px;
 
-    font-weight: bold;
+    font-weight:bold;
 
 }
 
 
 
-
-
 .subject-header:hover {
 
-    background: #e2e8f0;
+    background:#e2e8f0;
 
 }
 
@@ -254,19 +291,17 @@ button:hover {
 
 .subject-events {
 
-    margin-left: 30px;
+    margin-left:30px;
 
-    margin-top: 8px;
+    margin-top:8px;
 
 }
 
 
 
-
-
 .deadline-item {
 
-    padding: 4px;
+    padding:4px;
 
 }
 
@@ -276,11 +311,9 @@ button:hover {
 
 .hidden {
 
-    display: none;
+    display:none;
 
 }
-
-
 
 
 
@@ -288,19 +321,11 @@ button:hover {
 
 /* Calendar dropdown */
 
-.calendar-group {
-
-    width: 100%;
-
-}
-
-
-
 .calendar-subject {
 
-    cursor: pointer;
+    cursor:pointer;
 
-    font-weight: bold;
+    font-weight:bold;
 
 }
 
@@ -308,7 +333,7 @@ button:hover {
 
 .calendar-subject:hover {
 
-    text-decoration: underline;
+    text-decoration:underline;
 
 }
 
@@ -316,9 +341,9 @@ button:hover {
 
 .calendar-deadlines {
 
-    margin-left: 12px;
+    margin-left:12px;
 
-    font-size: 12px;
+    font-size:12px;
 
 }
 
@@ -326,40 +351,11 @@ button:hover {
 
 
 
-/* Error */
 
 #errorMessage {
 
-    text-align: center;
+    text-align:center;
 
-    color: red;
-
-    margin-top: 20px;
-
-}
-
-
-
-
-
-
-/* Mobile */
-
-@media(max-width:600px){
-
-
-    body {
-
-        margin: 10px;
-
-    }
-
-
-    button {
-
-        font-size: 12px;
-
-    }
-
+    color:red;
 
 }
