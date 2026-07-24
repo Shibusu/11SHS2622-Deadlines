@@ -24,27 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
 
-eventDidMount: function(info) {
-
-    if (info.view.type === "listMonth") {
-
-        let subject = info.event.extendedProps.subject;
-
-        let title = info.el.querySelector(".fc-list-event-title");
-
-        if (title && subject) {
-            title.innerHTML = `
-                ${info.event.title}
-                <br>
-                <small>${subject}</small>
-            `;
-        }
-
-    }
-
-},
-
-
             events: function(fetchInfo, successCallback, failureCallback) {
 
                 fetch("https://docs.google.com/spreadsheets/d/1_OZQAOVAdUXa5H_tDAU2bw7Dq_lhBlGq9yUw9yU2WWs/export?format=csv")
@@ -75,7 +54,8 @@ eventDidMount: function(info) {
 
                                     events.push({
 
-                                        title: title,
+                                        // Adds subject to title for list view
+                                        title: `[${subject}] ${title}`,
 
                                         start: date,
 
