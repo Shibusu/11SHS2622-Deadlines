@@ -1,182 +1,238 @@
-let currentFilter = "all";
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f8fafc;
+}
 
 
-document.addEventListener('DOMContentLoaded', function () {
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
 
-    const subjectColors = {
+/* Filter buttons */
 
-        "GenSci": "#3b82f6",
+#filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 
-        "GenMath": "#ef4444",
 
-        "FiMa": "#f97316",
+#filters button {
 
-        "L&CSK": "#22c55e",
+    background: white;
 
-        "Kasaysayan": "#ec4899",
+    border: 1px solid #d1d5db;
 
-        "MabCom": "#a855f7",
+    border-radius: 8px;
 
-        "EffCom": "#eab308"
+    padding: 8px 14px;
 
-    };
+    cursor: pointer;
 
+    font-size: 14px;
 
+    display: flex;
 
-    window.calendar = new FullCalendar.Calendar(
+    align-items: center;
 
-        document.getElementById('calendar'),
+}
 
-        {
 
-            initialView: 'dayGridMonth',
+#filters button:hover {
 
+    background: #f1f5f9;
 
-            // NEW: collapse multiple events on the same day
-            dayMaxEvents: true,
+}
 
 
-            headerToolbar: {
 
-                left: "prev,next today",
+/* Subject dots */
 
-                center: "title",
+.dot {
 
-                right: "dayGridMonth,listMonth"
+    display: inline-block;
 
-            },
+    width: 10px;
 
+    height: 10px;
 
-            events: function(fetchInfo, successCallback, failureCallback) {
+    border-radius: 50%;
 
+    margin-right: 7px;
 
-                fetch("https://docs.google.com/spreadsheets/d/1_OZQAOVAdUXa5H_tDAU2bw7Dq_lhBlGq9yUw9yU2WWs/export?format=csv")
+}
 
 
-                .then(response => response.text())
+.gensci {
+    background: #3b82f6;
+}
 
 
-                .then(csv => {
+.genmath {
+    background: #ef4444;
+}
 
 
-                    let rows = csv.split("\n");
+.fima {
+    background: #f97316;
+}
 
-                    let events = [];
 
+.lcsk {
+    background: #22c55e;
+}
 
 
-                    for (let i = 1; i < rows.length; i++) {
+.kasaysayan {
+    background: #ec4899;
+}
 
 
-                        let data = rows[i].split(",");
+.mabcom {
+    background: #a855f7;
+}
 
 
+.effcom {
+    background: #eab308;
+}
 
-                        if (data.length >= 3) {
 
 
-                            let title = data[0].trim();
+/* Calendar */
 
-                            let subject = data[1].trim();
+#calendar {
 
-                            let date = data[2].trim();
+    max-width: 1100px;
 
+    margin: auto;
 
+    background: white;
 
-                            if (title && date) {
+    padding: 20px;
 
+    border-radius: 12px;
 
-                                events.push({
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 
+}
 
-                                    title: `[${subject}] ${title}`,
 
-                                    start: date,
 
-                                    color: subjectColors[subject] || "#6b7280",
+/* Custom grouped list */
 
+#deadlineList {
 
-                                    extendedProps: {
+    max-width: 1100px;
 
-                                        subject: subject
+    margin: 20px auto;
 
-                                    }
+    background: white;
 
+    padding: 20px;
 
-                                });
+    border-radius: 12px;
 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 
-                            }
+}
 
 
-                        }
 
+.list-date {
 
-                    }
+    font-size: 20px;
 
+    font-weight: bold;
 
+    margin-top: 20px;
 
-                    // Subject filter
+    margin-bottom: 10px;
 
-                    if (currentFilter !== "all") {
+}
 
 
-                        events = events.filter(event =>
 
-                            event.extendedProps.subject === currentFilter
+.subject-group {
 
-                        );
+    margin-bottom: 10px;
 
+}
 
-                    }
 
 
+.subject-header {
 
-                    successCallback(events);
+    cursor: pointer;
 
+    font-weight: bold;
 
+    padding: 10px;
 
-                })
+    border-radius: 8px;
 
+    background: #f1f5f9;
 
+    display: flex;
 
-                .catch(error => {
+    align-items: center;
 
+}
 
-                    console.log("Error loading deadlines:", error);
 
-                    failureCallback(error);
 
+.subject-header:hover {
 
-                });
+    background: #e2e8f0;
 
+}
 
-            }
 
-        }
 
+.subject-events {
 
-    );
+    margin-left: 30px;
 
+    margin-top: 8px;
 
+}
 
-    calendar.render();
 
 
-});
+.deadline-item {
 
+    padding: 6px 0;
 
+}
 
 
 
-function filterSubject(subject) {
+/* Mobile */
 
+@media (max-width: 600px) {
 
-    currentFilter = subject;
+    body {
+        margin: 10px;
+    }
 
 
-    calendar.refetchEvents();
+    #calendar,
+    #deadlineList {
 
+        padding: 10px;
+
+    }
+
+
+    #filters button {
+
+        font-size: 12px;
+
+    }
 
 }
