@@ -42,19 +42,17 @@ h1 {
 
 button {
 
-    border: none;
+    border: 1px solid #d1d5db;
 
     background: white;
 
-    padding: 10px 16px;
+    padding: 8px 14px;
 
-    border-radius: 12px;
+    border-radius: 10px;
 
     cursor: pointer;
 
     font-size: 14px;
-
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 
     transition: 0.2s;
 
@@ -64,9 +62,7 @@ button {
 
 button:hover {
 
-    transform: translateY(-2px);
-
-    background: #f1f5f9;
+    background: #e2e8f0;
 
 }
 
@@ -74,7 +70,7 @@ button:hover {
 
 
 
-/* Calendar/List buttons */
+/* Calendar/List switch */
 
 #viewButtons {
 
@@ -84,7 +80,7 @@ button:hover {
 
     align-items: center;
 
-    gap: 15px;
+    gap: 0;
 
     margin: 25px auto;
 
@@ -94,27 +90,41 @@ button:hover {
 
 #viewButtons button {
 
+    padding: 10px 25px;
+
     font-size: 15px;
 
-    font-weight: bold;
+    border: 1px solid #cbd5e1;
 
-    padding: 12px 24px;
-
-    border-radius: 14px;
-
-    background: #ffffff;
-
-    border: 2px solid #e2e8f0;
+    background: white;
 
 }
 
 
 
-#viewButtons button:hover {
+#viewButtons button:first-child {
 
-    background: #e0f2fe;
+    border-radius: 12px 0 0 12px;
 
-    border-color: #38bdf8;
+}
+
+
+
+#viewButtons button:last-child {
+
+    border-radius: 0 12px 12px 0;
+
+}
+
+
+
+#viewButtons button.active {
+
+    background: #2563eb;
+
+    color: white;
+
+    border-color: #2563eb;
 
 }
 
@@ -143,7 +153,7 @@ button:hover {
 
 .gensci {
 
-    background:#3b82f6;
+    background: #3b82f6;
 
 }
 
@@ -151,7 +161,7 @@ button:hover {
 
 .genmath {
 
-    background:#ef4444;
+    background: #ef4444;
 
 }
 
@@ -159,7 +169,7 @@ button:hover {
 
 .fima {
 
-    background:#f97316;
+    background: #f97316;
 
 }
 
@@ -167,7 +177,7 @@ button:hover {
 
 .lcsk {
 
-    background:#22c55e;
+    background: #22c55e;
 
 }
 
@@ -175,7 +185,7 @@ button:hover {
 
 .kasaysayan {
 
-    background:#ec4899;
+    background: #ec4899;
 
 }
 
@@ -183,7 +193,7 @@ button:hover {
 
 .mabcom {
 
-    background:#a855f7;
+    background: #a855f7;
 
 }
 
@@ -191,7 +201,7 @@ button:hover {
 
 .effcom {
 
-    background:#eab308;
+    background: #eab308;
 
 }
 
@@ -203,17 +213,17 @@ button:hover {
 
 #calendar {
 
-    max-width:1100px;
+    max-width: 1100px;
 
-    margin:auto;
+    margin: auto;
 
-    background:white;
+    background: white;
 
-    padding:20px;
+    padding: 20px;
 
-    border-radius:16px;
+    border-radius: 14px;
 
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 
 }
 
@@ -225,19 +235,19 @@ button:hover {
 
 #deadlineList {
 
-    display:none;
+    display: none;
 
-    max-width:1100px;
+    max-width: 1100px;
 
-    margin:auto;
+    margin: auto;
 
-    background:white;
+    background: white;
 
-    padding:20px;
+    padding: 20px;
 
-    border-radius:16px;
+    border-radius: 14px;
 
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 
 }
 
@@ -247,11 +257,13 @@ button:hover {
 
 .list-date {
 
-    font-size:20px;
+    font-size: 20px;
 
-    font-weight:bold;
+    font-weight: bold;
 
-    margin-top:20px;
+    margin-top: 20px;
+
+    margin-bottom: 10px;
 
 }
 
@@ -261,19 +273,19 @@ button:hover {
 
 .subject-header {
 
-    display:flex;
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    cursor:pointer;
+    cursor: pointer;
 
-    padding:10px;
+    padding: 10px;
 
-    background:#f1f5f9;
+    background: #f1f5f9;
 
-    border-radius:10px;
+    border-radius: 8px;
 
-    font-weight:bold;
+    font-weight: bold;
 
 }
 
@@ -281,7 +293,7 @@ button:hover {
 
 .subject-header:hover {
 
-    background:#e2e8f0;
+    background: #e2e8f0;
 
 }
 
@@ -291,17 +303,19 @@ button:hover {
 
 .subject-events {
 
-    margin-left:30px;
+    margin-left: 30px;
 
-    margin-top:8px;
+    margin-top: 8px;
 
 }
 
 
 
+
+
 .deadline-item {
 
-    padding:4px;
+    padding: 4px;
 
 }
 
@@ -311,7 +325,7 @@ button:hover {
 
 .hidden {
 
-    display:none;
+    display: none;
 
 }
 
@@ -321,11 +335,19 @@ button:hover {
 
 /* Calendar dropdown */
 
+.calendar-group {
+
+    width: 100%;
+
+}
+
+
+
 .calendar-subject {
 
-    cursor:pointer;
+    cursor: pointer;
 
-    font-weight:bold;
+    font-weight: bold;
 
 }
 
@@ -333,7 +355,7 @@ button:hover {
 
 .calendar-subject:hover {
 
-    text-decoration:underline;
+    text-decoration: underline;
 
 }
 
@@ -341,9 +363,23 @@ button:hover {
 
 .calendar-deadlines {
 
-    margin-left:12px;
+    margin-left: 12px;
 
-    font-size:12px;
+    font-size: 12px;
+
+}
+
+
+
+
+
+#errorMessage {
+
+    text-align: center;
+
+    color: red;
+
+    margin-top: 20px;
 
 }
 
@@ -352,10 +388,21 @@ button:hover {
 
 
 
-#errorMessage {
+@media(max-width:600px){
 
-    text-align:center;
 
-    color:red;
+    body {
+
+        margin: 10px;
+
+    }
+
+
+    button {
+
+        font-size: 12px;
+
+    }
+
 
 }
