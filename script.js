@@ -26,13 +26,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 eventDidMount: function(info) {
 
-    let subject = info.event.extendedProps.subject;
+    if (info.view.type === "listMonth") {
 
-    // Only modify list view
-    let listItem = info.el.querySelector(".fc-list-event-title");
+        let subject = info.event.extendedProps.subject;
 
-    if (listItem && subject) {
-        listItem.innerHTML += `<br><small>${subject}</small>`;
+        let title = info.el.querySelector(".fc-list-event-title");
+
+        if (title && subject) {
+            title.innerHTML = `
+                ${info.event.title}
+                <br>
+                <small>${subject}</small>
+            `;
+        }
+
     }
 
 },
