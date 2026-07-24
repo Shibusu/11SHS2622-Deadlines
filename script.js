@@ -24,6 +24,23 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
 
+            eventDidMount: function(info) {
+
+                if (info.view.type === "listMonth") {
+
+                    let subject = info.event.extendedProps.subject;
+
+                    let timeCell = info.el.querySelector(".fc-list-event-time");
+
+                    if (timeCell && subject) {
+                        timeCell.innerHTML = subject;
+                    }
+
+                }
+
+            },
+
+
             events: function(fetchInfo, successCallback, failureCallback) {
 
                 fetch("https://docs.google.com/spreadsheets/d/1_OZQAOVAdUXa5H_tDAU2bw7Dq_lhBlGq9yUw9yU2WWs/export?format=csv")
@@ -37,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         let events = [];
 
 
-                        // Skip the first row (headers)
+                        // Skip header row
                         for (let i = 1; i < rows.length; i++) {
 
                             let data = rows[i].split(",");
@@ -54,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                                     events.push({
 
-                                        // Adds subject to title for list view
                                         title: `[${subject}] ${title}`,
 
                                         start: date,
