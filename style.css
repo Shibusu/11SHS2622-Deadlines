@@ -1,49 +1,64 @@
 body {
+
     font-family: Arial, sans-serif;
+
     margin: 20px;
+
     background: #f8fafc;
+
 }
+
 
 
 h1 {
+
     text-align: center;
+
     margin-bottom: 20px;
+
 }
 
 
-/* Filter buttons */
+
+
+
+/* Category buttons */
 
 #filters {
+
     display: flex;
+
     flex-wrap: wrap;
-    gap: 10px;
+
     justify-content: center;
-    margin-bottom: 20px;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+
 }
 
 
-#filters button {
 
-    background: white;
+button {
 
     border: 1px solid #d1d5db;
 
-    border-radius: 8px;
+    background: white;
 
     padding: 8px 14px;
+
+    border-radius: 8px;
 
     cursor: pointer;
 
     font-size: 14px;
 
-    display: flex;
-
-    align-items: center;
-
 }
 
 
-#filters button:hover {
+
+button:hover {
 
     background: #f1f5f9;
 
@@ -51,56 +66,100 @@ h1 {
 
 
 
+
+
+/* Calendar/List buttons */
+
+#viewButtons {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+
+
+
 /* Subject dots */
 
 .dot {
-
-    display: inline-block;
 
     width: 10px;
 
     height: 10px;
 
+    display: inline-block;
+
     border-radius: 50%;
 
-    margin-right: 7px;
+    margin-right: 6px;
 
 }
+
 
 
 .gensci {
+
     background: #3b82f6;
+
 }
+
 
 
 .genmath {
+
     background: #ef4444;
+
 }
+
 
 
 .fima {
+
     background: #f97316;
+
 }
+
 
 
 .lcsk {
+
     background: #22c55e;
+
 }
+
 
 
 .kasaysayan {
+
     background: #ec4899;
+
 }
+
 
 
 .mabcom {
+
     background: #a855f7;
+
 }
+
 
 
 .effcom {
+
     background: #eab308;
+
 }
+
+
 
 
 
@@ -124,13 +183,15 @@ h1 {
 
 
 
-/* Custom grouped list */
+
+
+/* Custom list */
 
 #deadlineList {
 
     max-width: 1100px;
 
-    margin: 20px auto;
+    margin: auto;
 
     background: white;
 
@@ -141,6 +202,8 @@ h1 {
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 
 }
+
+
 
 
 
@@ -158,25 +221,19 @@ h1 {
 
 
 
-.subject-group {
-
-    margin-bottom: 10px;
-
-}
-
 
 
 .subject-header {
 
-    cursor: pointer;
-
-    font-weight: bold;
-
     padding: 10px;
+
+    background: #f1f5f9;
 
     border-radius: 8px;
 
-    background: #f1f5f9;
+    cursor: pointer;
+
+    font-weight: bold;
 
     display: flex;
 
@@ -186,11 +243,15 @@ h1 {
 
 
 
+
+
 .subject-header:hover {
 
     background: #e2e8f0;
 
 }
+
+
 
 
 
@@ -204,35 +265,53 @@ h1 {
 
 
 
+
+
 .deadline-item {
 
-    padding: 6px 0;
+    padding: 5px;
 
 }
 
 
 
-/* Mobile */
 
-@media (max-width: 600px) {
+
+.hidden {
+
+    display: none;
+
+}
+
+
+
+
+
+
+@media(max-width:600px){
+
 
     body {
+
         margin: 10px;
+
+    }
+
+
+    button {
+
+        font-size: 12px;
+
     }
 
 
     #calendar,
+
     #deadlineList {
 
         padding: 10px;
 
     }
 
-
-    #filters button {
-
-        font-size: 12px;
-
-    }
 
 }
