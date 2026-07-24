@@ -24,20 +24,18 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
 
-            eventContent: function(arg) {
+eventDidMount: function(info) {
 
-                let subject = arg.event.extendedProps.subject;
+    let subject = info.event.extendedProps.subject;
 
-                return {
-                    html: `
-                        <div>
-                            <b>${arg.event.title}</b><br>
-                            <small>${subject}</small>
-                        </div>
-                    `
-                };
+    // Only modify list view
+    let listItem = info.el.querySelector(".fc-list-event-title");
 
-            },
+    if (listItem && subject) {
+        listItem.innerHTML += `<br><small>${subject}</small>`;
+    }
+
+},
 
 
             events: function(fetchInfo, successCallback, failureCallback) {
